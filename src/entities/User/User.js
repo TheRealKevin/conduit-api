@@ -15,6 +15,10 @@ const user = db.define('User', {
         allowNull: false,
         unique: true
     },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     bio: {
         type: DataTypes.STRING(100),
         allowNull: true
@@ -22,6 +26,9 @@ const user = db.define('User', {
     image: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    token: {
+        type: DataTypes.STRING
     }
 },{
     freezeTableName: true
