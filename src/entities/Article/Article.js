@@ -1,10 +1,14 @@
-const {Sequelize, DataTypes} = require('sequelize');
+const { Sequelize } = require('sequelize');
 const db = require('../../config/Database');
 
-const user = require('../User/User');
+const User = require('../User/User');
 
-const article = db.define('Article', {
-    slug : {
+// // //      TODO
+// // //  1. add "favorited", "favoritesCount" and "author" to the entity
+// // //  2. Error: article.belongsTo called with something that's not a subclass of Sequelize.Mode
+
+const Article = db.define('Article', {
+    slug : { 
         type: Sequelize.STRING(30),
         allowNull: false,
         primaryKey: true,
@@ -18,17 +22,25 @@ const article = db.define('Article', {
         type: Sequelize.STRING(100)
     },
     body : {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
     },
     createdAt : {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: DataTypes.NOW
+        defaultValue: Sequelize.NOW
     },
     updatedAt : {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: DataTypes.NOW
+        defaultValue: Sequelize.NOW
+    },
+    favorited : {
+        type : Sequelize.BOOLEAN,
+        defaultValue: false
+    },
+    favoritesCount : {
+        type : Sequelize.INTEGER,
+        defaultValue : 0
     }
 },{
     freezeTableName: true
@@ -36,4 +48,4 @@ const article = db.define('Article', {
 
 // Article.belongsTo(User);
 
-module.exports = article; 
+module.exports = Article; 

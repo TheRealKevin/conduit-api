@@ -6,7 +6,7 @@ const route = express.Router();
 
 // POST REQ --> /users/             REGISTER NEW USER
 
-route.post('/', async (req,res) => {
+route.post('/', async (req,res) => { 
     try{
         //console.log('In Routes '+ req);
         const newUser = await addUser({

@@ -31,13 +31,13 @@ app.get('/', async (req,res) => {
 
 // To START sequelize
 
-// async function main() {
-//     await sequelize.sync({force: true})
-// }
+async function main() {
+    await sequelize.sync({force: true})
+}
 
-// main()
+main()
 
-// TO START sequelize
+// TO START sequelize 
  
 app.listen(3000 , () => {
     console.log('App is listening to 3000');

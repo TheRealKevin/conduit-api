@@ -1,39 +1,41 @@
-const {Sequelize,DataTypes} = require('sequelize');
+const {Sequelize} = require('sequelize');
 const db = require('../../config/Database');
 
-const article = require('../Article/Article');
+const Article = require('../Article/Article');
 
-const user = db.define('User', {
+//  https://openclipart.org/download/247320/abstract-user-flat-4.svg
+
+const User = db.define('User', {
     email: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING(40),
         allowNull: false,
         primaryKey: true,
         unique: true
     },
     username: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
         unique: true
     },
     password: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false
     },
     bio: {
-        type: DataTypes.STRING(100),
+        type: Sequelize.STRING(100),
         allowNull: true
     },
     image: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: true
     },
     token: {
-        type: DataTypes.STRING
+        type: Sequelize.STRING
     }
 },{
     freezeTableName: true
 })
 
-user.hasMany(article);
+User.hasMany(Article);
 
-module.exports = user;
+module.exports = User;
