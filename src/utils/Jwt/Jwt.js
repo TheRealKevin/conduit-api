@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = require('../../config/JWTSecret');
 
-const sign = async user => {
+const sign = user => {
     return new Promise((res,rej) => {
         jwt.sign({
             username: user.username,
@@ -16,7 +16,7 @@ const sign = async user => {
     })
 }
 
-const verify = async token => {
+const verify = token => {
     return new Promise((res,rej) => {
         jwt.verify(token, JWT_SECRET, (err,encoded) => {
             if(err){
@@ -46,4 +46,4 @@ const verify = async token => {
 
 // run()
 
-module.exports = {sign};
+module.exports = {sign,verify};

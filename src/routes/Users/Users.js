@@ -5,7 +5,7 @@ const {addUser,loginUser} = require('../../controllers/Users/Users')
 const route = express.Router();
 
 // POST REQ --> /users/             REGISTER NEW USER
-
+ 
 route.post('/', async (req,res) => { 
     try{
         //console.log('In Routes '+ req);

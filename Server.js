@@ -31,11 +31,11 @@ app.get('/', async (req,res) => {
 
 // To START sequelize
 
-async function main() {
-    await sequelize.sync({force: true})
-}
+// async function main() {
+//     await sequelize.sync({force: true})
+// }
 
-main()
+// main()
 
 // TO START sequelize 
  

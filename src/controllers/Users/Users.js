@@ -7,7 +7,7 @@ const addUser = async(data) => {
         throw new Error('Kindly fill the credentials');
     }
     const user = await User.findOne({where: {email: data.email}});
-    if(user){
+    if(user){ 
         throw new Error('User with the same email already exists');
     }
     try{

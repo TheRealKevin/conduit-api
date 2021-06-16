@@ -22,7 +22,8 @@ const Article = db.define('Article', {
         type: Sequelize.STRING(100)
     },
     body : {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull : false
     },
     createdAt : {
         allowNull: false,
