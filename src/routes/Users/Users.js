@@ -1,5 +1,4 @@
 const express = require('express'); 
-const db = require('../../config/Database');
 const {addUser,loginUser} = require('../../controllers/Users/Users')
 
 const route = express.Router();

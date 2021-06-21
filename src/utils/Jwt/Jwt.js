@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = require('../../config/JWTSecret');
 
-const sign = user => {
+const sign = (username,email) => {
     return new Promise((res,rej) => {
         jwt.sign({
-            username: user.username,
-            email: user.email
+            username: username,
+            email: email
         }, JWT_SECRET, (err,encoded) => {
             if(err) {
                 return rej(err)

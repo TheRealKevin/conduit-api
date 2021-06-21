@@ -1,9 +1,6 @@
 const express = require('express');
-const db = require('../../config/Database');
 const {getArticle,createArticle} = require('../../controllers/Articles/Articles');
 const authByToken = require('../../middleware/auth');
-
-const slugify = require('../../utils/Slugify/Slugify');
 
 const route = express.Router();
 
@@ -11,13 +8,8 @@ const route = express.Router();
 
 route.post('/',authByToken, async (req,res) => {
     try{
-        const {article,user} = req.body;
-        const newArticle = await createArticle({
-            title : article.title,
-            description : article.description,
-            body : article.body,
-            user : user         // This is the author of the article
-        })
+        // console.log('This is body ',req.body.article, ' and this is auth ',req.user);
+        const newArticle = await createArticle(req.body.article,req.user.email);
         return res.send(newArticle)
     }catch(err){
         console.log(err);

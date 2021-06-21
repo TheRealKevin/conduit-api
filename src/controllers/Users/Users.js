@@ -1,4 +1,4 @@
-const User = require('../../entities/User/User');
+const { User } = require('../../entities/entities');
 const {genPassword,filterPassword, compareHash} = require('../../utils/Password/Password')
 const {sign} = require('../../utils/Jwt/Jwt');
 
@@ -11,18 +11,26 @@ const addUser = async(data) => {
         throw new Error('User with the same email already exists');
     }
     try{
-        const hashedPass = await genPassword(data.password);
-        // console.log(`Hashed Password is ${hashedPass} in Controller`);
         const newUser = await User.create({
             username: data.username,
             email : data.email,
-            password : await genPassword(data.password)
+            password : await genPassword(data.password),
+            token : await sign(data.username,data.email)
         })
-        await filterPassword(newUser);
-        newUser.token = await sign(newUser)  
-        return newUser; 
+
+
+        const updatedNewUser = await User.findOne({
+            attributes : [
+                "email",
+                "username",
+                "bio",
+                "image"
+            ],
+            where : { email : newUser.email }
+        })
+        // updatedNewUser.token = await sign(updatedNewUser)   
+        return filterPassword(updatedNewUser); 
     }catch(err){
-        //console.error(err);
         throw err;
     }
 }

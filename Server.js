@@ -29,7 +29,7 @@ app.get('/', async (req,res) => {
     }
 })
 
-// To START sequelize
+// To START sequelize and also wipes the DB clean
 
 // async function main() {
 //     await sequelize.sync({force: true})

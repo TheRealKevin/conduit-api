@@ -1,7 +1,9 @@
-const Article = require('../../entities/Article/Article');
-const User = require('../../entities/User/User');
+const { Article, User } = require('../../entities/entities')
 const slugify = require('../../utils/Slugify/Slugify');
 const { filterPassword } = require('../../utils/Password/Password');
+
+//      Fixes
+//  1. SQL commands running but author is not being updated in DB
 
 const getArticle = async(slug) => {
     if(!slug) throw new Error('No article found');
@@ -19,7 +21,7 @@ const getArticle = async(slug) => {
             {             // Getting the other tables columns
                 attributes : ["username","bio","image"],
                 model : User,
-                as : "author"
+                as : "author",
             }
         ]  
     });
@@ -27,24 +29,51 @@ const getArticle = async(slug) => {
     return article;
 }
 
-const createArticle = async(data) => {
-    if(!data.title) throw new Error('Title missing');
-    if(!data.body) throw new Error('Body missing');
-    if(!data.username) throw new Error('Author missing');
+const createArticle = async(article,email) => {
+    if(!article.title) throw new Error('Title missing');
+    if(!article.body) throw new Error('Body missing');
+    // if(!article.username) throw new Error('Author missing');
 
-    const Article = await Article.findOne({where : {title: data.title}});
-    const User = await User.findOne({where : {email : data.user.email}});
-    if(!User) throw new Error('User does not exist');
-    if(Article) throw new Error('Kindly change title of your article as another article with the similar title already exists')
+    const existingArticle = await Article.findOne({where : {title: article.title}});
+    if(existingArticle) throw new Error('Kindly change title of your article as another article with the similar title already exists');
+    const existingUser = await User.findOne({where : {email : email}});
+    
+    // console.log('This is email given ',email);
+    
+    if(!existingUser) throw new Error('User does not exist');
+    console.log(`This is existing User's email `,existingUser.email);
+    console.log(`This is existing User`,existingUser);
     try{
-        const newArticle = await Article.create({
-            slug : slugify(data.title),
-            body : data.body,
-            title : data.title,
-            description : data.description,
-            author : filterPassword(data.user)
+        const _article = await Article.create({
+            slug : slugify(article.title),
+            body : article.body,
+            title : article.title,
+            description : article.description,
+            authorEmail : existingUser.email
+            // author : filterPassword(existingUser)
         })
-        return newArticle
+
+        const newArticle = await Article.findOne({
+            attributes : [
+                "slug",
+                "title",
+                "description",
+                "body",
+                "createdAt",
+                "updatedAt"
+            ],
+            where : { slug : _article.slug},
+            include : [             
+                {
+                    attributes : ["username", "bio", "image"],
+                    model : User,
+                    as : "author",
+                   where : {email : email}
+                }
+            ]
+        });
+        // console.log('Article created is',newArticle)
+        return newArticle;
     }catch(err){
         throw err;
     }

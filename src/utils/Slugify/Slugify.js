@@ -1,5 +1,7 @@
 const slugify = (title) => {
-    return title.toLowerCase().split(' ').join('-');
-
-    module.exports = slugify;
+    const slug = title.toLowerCase().split(' ').join('-');
+    // console.log(slug)
+    return slug;
 }
+
+module.exports = slugify;
