@@ -3,8 +3,14 @@ const {genPassword,filterPassword, compareHash} = require('../../utils/Password/
 const {sign} = require('../../utils/Jwt/Jwt');
 
 const addUser = async(data) => {
-    if(!data.username || !data.email || !data.password){
-        throw new Error('Kindly fill the credentials');
+    if(!data.username){
+        throw new Error('Kindly enter a username');
+    }
+    if(!data.email){
+        throw new Error('Kindly enter an email');
+    }
+    if(!data.password){
+        throw new Error('Kindly enter a password');
     }
     const user = await User.findOne({where: {email: data.email}});
     if(user){ 

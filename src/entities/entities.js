@@ -75,4 +75,4 @@ const User = db.define('User', {
 User.hasMany(Article, {as: "author"});
 Article.belongsTo(User, {as : "author"});
 
-module.exports = { Article, User };
+module.exports = { Article, User};

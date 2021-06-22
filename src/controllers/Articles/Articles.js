@@ -1,4 +1,5 @@
-const { Article, User } = require('../../entities/entities')
+const { Article, User } = require('../../entities/entities');
+const {Op} = require('sequelize');
 const slugify = require('../../utils/Slugify/Slugify');
 const { filterPassword } = require('../../utils/Password/Password');
 
@@ -79,4 +80,78 @@ const createArticle = async(article,email) => {
     }
 }
 
-module.exports = {getArticle,createArticle};
+const deleteArticle = async (slug,email) => {
+    const article = await Article.findOne({where : {slug : slug}});
+    if(!article) throw new Error('Article with such slug does not exist');
+    try{
+        const articleDeleted =  !!await Article.destroy({   // V.Imp 1. Using the !! Bang Bang Operator on the result of the await which will change the result into a Boolean
+                    where : {[Op.and] : [  // V.Imp 2. Op -> short for operator and Op.and is equivalent of WHERE A AND B
+                        {slug : slug},      // We use Op when we have to consider 2 or more conditions i.e when using "where" (as default is just comparing one value)
+                        {authorEmail : email}
+                    ]}
+                }); 
+        // console.log('Article deleted ',articleDeleted);
+        if(!articleDeleted) throw new Error('Article was not able to be deleted'); 
+        return articleDeleted;
+    }catch(err){
+        throw err;
+    }
+}
+
+const updateArticle = async (slug,email,newArticle) => {
+    try{
+        const oldArticle = await Article.findOne({where : {slug : slug}});
+        if(!oldArticle) throw new Error('Article with such title does not exist');
+
+        let newSlug = newArticle.title ? await slugify(newArticle.title) : null;     // const requires initialization so using let
+        // if(newArticle.title){                                                       // Checking if title has been changed, If yes then get new slug now 
+        //     newSlug : await slugify(newArticle.title)                               // As can't be checked (we'll get error as if hasn't been changed/updated) when using update function below
+        // }
+
+        const updatedArticleTemp = await Article.update({
+            slug : newSlug || slug,
+            title : newArticle.title || oldArticle.title,
+            description : newArticle.description || oldArticle.description,
+            body : newArticle.body || oldArticle.body,
+        },{
+            where : {
+                [Op.and] : [{slug : slug}, {authorEmail : email}]
+            },
+            returning: true,
+            plain: true
+        });
+
+        if(!updatedArticleTemp) throw new Error('Article was not updated');
+
+        const updatedArticle = await Article.findOne({where : {slug : newSlug || slug}});
+        return updatedArticle;
+    }catch(err){
+        throw err;
+    } 
+}
+
+const getAllArticles = async (req,res) => {
+    const articles = await Article.findAll({
+        attributes : [
+            "slug",
+            "title",
+            "description",
+            "body",
+            "createdAt",
+            "updatedAt"
+        ],
+        include : [
+            {
+                attributes : ["username", "bio", "image"],
+                model : User,
+                as: "author"
+            }
+        ]
+    });
+    return {
+        articles,
+        articlesCount : articles.length
+    }
+}
+
+module.exports = {getArticle, createArticle, deleteArticle, updateArticle, getAllArticles};
