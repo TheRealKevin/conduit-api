@@ -30,14 +30,14 @@ const getArticle = async(slug) => {
     return article;
 }
 
-const createArticle = async(article,email) => {
+const createArticle = async(article,username) => {
     if(!article.title) throw new Error('Title missing');
     if(!article.body) throw new Error('Body missing');
     // if(!article.username) throw new Error('Author missing');
 
     const existingArticle = await Article.findOne({where : {title: article.title}});
     if(existingArticle) throw new Error('Kindly change title of your article as another article with the similar title already exists');
-    const existingUser = await User.findOne({where : {email : email}});
+    const existingUser = await User.findOne({where : {username : username}});
     
     // console.log('This is email given ',email);
     
@@ -50,7 +50,7 @@ const createArticle = async(article,email) => {
             body : article.body,
             title : article.title,
             description : article.description,
-            authorEmail : existingUser.email
+            authorUsername : existingUser.username
             // author : filterPassword(existingUser)
         })
 
@@ -69,7 +69,7 @@ const createArticle = async(article,email) => {
                     attributes : ["username", "bio", "image"],
                     model : User,
                     as : "author",
-                   where : {email : email}
+                   where : {username : username}
                 }
             ]
         });
@@ -80,14 +80,14 @@ const createArticle = async(article,email) => {
     }
 }
 
-const deleteArticle = async (slug,email) => {
+const deleteArticle = async (slug,username) => {
     const article = await Article.findOne({where : {slug : slug}});
     if(!article) throw new Error('Article with such slug does not exist');
     try{
         const articleDeleted =  !!await Article.destroy({   // V.Imp 1. Using the !! Bang Bang Operator on the result of the await which will change the result into a Boolean
                     where : {[Op.and] : [  // V.Imp 2. Op -> short for operator and Op.and is equivalent of WHERE A AND B
                         {slug : slug},      // We use Op when we have to consider 2 or more conditions i.e when using "where" (as default is just comparing one value)
-                        {authorEmail : email}
+                        {authorUsername : username}
                     ]}
                 }); 
         // console.log('Article deleted ',articleDeleted);
@@ -98,7 +98,7 @@ const deleteArticle = async (slug,email) => {
     }
 }
 
-const updateArticle = async (slug,email,newArticle) => {
+const updateArticle = async (slug,username,newArticle) => {
     try{
         const oldArticle = await Article.findOne({where : {slug : slug}});
         if(!oldArticle) throw new Error('Article with such title does not exist');
@@ -115,7 +115,7 @@ const updateArticle = async (slug,email,newArticle) => {
             body : newArticle.body || oldArticle.body,
         },{
             where : {
-                [Op.and] : [{slug : slug}, {authorEmail : email}]
+                [Op.and] : [{slug : slug}, {authorUsername : username}]
             },
             returning: true,
             plain: true
@@ -130,7 +130,7 @@ const updateArticle = async (slug,email,newArticle) => {
     } 
 }
 
-const getAllArticles = async (req,res) => {
+const getAllArticles = async (username) => {
     const articles = await Article.findAll({
         attributes : [
             "slug",
@@ -140,18 +140,16 @@ const getAllArticles = async (req,res) => {
             "createdAt",
             "updatedAt"
         ],
+        where : {authorUsername : username},
         include : [
             {
                 attributes : ["username", "bio", "image"],
                 model : User,
-                as: "author"
+                as : "author"
             }
         ]
     });
-    return {
-        articles,
-        articlesCount : articles.length
-    }
+    return articles;
 }
 
 module.exports = {getArticle, createArticle, deleteArticle, updateArticle, getAllArticles};

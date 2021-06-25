@@ -9,7 +9,7 @@ route.post('/', async (req,res) => {
     try{
         //console.log('In Routes '+ req);
         const newUser = await addUser({
-            email: req.body.user.email,
+            email: req.body.user.email, 
             username : req.body.user.username,
             password: req.body.user.password
         })

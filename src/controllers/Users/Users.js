@@ -12,13 +12,13 @@ const addUser = async(data) => {
     if(!data.password){
         throw new Error('Kindly enter a password');
     }
-    const user = await User.findOne({where: {email: data.email}});
+    const user = await User.findOne({where: {username: data.username}});
     if(user){ 
         throw new Error('User with the same email already exists');
     }
     try{
         const newUser = await User.create({
-            username: data.username,
+            username: data.username.toLowerCase(),
             email : data.email,
             password : await genPassword(data.password),
             token : await sign(data.username,data.email)
@@ -32,7 +32,7 @@ const addUser = async(data) => {
                 "bio",
                 "image"
             ],
-            where : { email : newUser.email }
+            where : { username : newUser.username }
         })
         // updatedNewUser.token = await sign(updatedNewUser)   
         return filterPassword(updatedNewUser); 
@@ -46,7 +46,7 @@ const loginUser = async(data) => {
         throw new Error('Kindly fill the credentials');
     }
     // Checking whether the user with the email entered exists in the db or not
-    const user = await User.findOne({where: {email : data.email}});
+    const user = await User.findOne({where: {username : data.username}});
     if(!user){
         throw new Error('User with this email does not exist');
     }
@@ -59,4 +59,4 @@ const loginUser = async(data) => {
     return filterPassword(user);
 }
 
-module.exports = {addUser,loginUser}; 
+module.exports = {addUser,loginUser};  

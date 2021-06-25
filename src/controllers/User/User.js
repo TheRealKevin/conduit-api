@@ -21,7 +21,7 @@ const updateUser = async (oldUser,  newUser) => {
         username: newUser.username || oldUser.username,
         bio: newUser.bio || oldUser.bio,
         image: newUser.image || oldUser.image
-    },{ where : {email : oldUser.email},
+    },{ where : {username : oldUser.username},
         returning : true,   // To populate the instances with updated values
         plain : true    // To het returned instance as plain object
     });
@@ -32,7 +32,7 @@ const updateUser = async (oldUser,  newUser) => {
             "bio",
             "image"
         ],
-        where : {email : oldUser.email}
+        where : {username : oldUser.username}
     });
     return filterPassword(user);
 }

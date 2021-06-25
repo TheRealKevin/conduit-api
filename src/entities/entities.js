@@ -45,12 +45,12 @@ const User = db.define('User', {
     email: {
         type: Sequelize.STRING(40),
         allowNull: false,
-        primaryKey: true,
         unique: true
     },
     username: {
         type: Sequelize.STRING(30),
         allowNull: false,
+        primaryKey: true,
         unique: true
     },
     password: {

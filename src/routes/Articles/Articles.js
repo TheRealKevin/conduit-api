@@ -9,7 +9,7 @@ const route = express.Router();
 route.post('/',authByToken, async (req,res) => {
     try{
         // console.log('This is body ',req.body.article, ' and this is auth ',req.user);
-        const newArticle = await createArticle(req.body.article,req.user.email);
+        const newArticle = await createArticle(req.body.article,req.user.username);
         return res.send(newArticle)
     }catch(err){
         console.log(err);
@@ -42,7 +42,7 @@ route.get('/:slug', async (req,res) => {
 route.delete('/:slug', authByToken, async (req,res) => {
     try{
         const slug = req.params.slug;
-        await deleteArticle(slug,req.user.email);
+        await deleteArticle(slug,req.user.username);
         return res.status(200).json({ message : 'Article deleted successfully'})
     }catch(err){
         return res.status(500).json({
@@ -58,7 +58,7 @@ route.delete('/:slug', authByToken, async (req,res) => {
 route.patch('/:slug', authByToken, async (req,res) => {
     try{
         const slug = req.params.slug;
-        const updatedArticle = await updateArticle(slug,req.user.email,req.body.article);
+        const updatedArticle = await updateArticle(slug,req.user.username,req.body.article);
         return res.status(200).json(updatedArticle);
     }catch(err){
         return res.status(500).json({
@@ -71,18 +71,19 @@ route.patch('/:slug', authByToken, async (req,res) => {
 
 // GET REQ --> /articles                   LIST ALL ARTICLES
 
-// route.get('/', async (req,res) => {
-//     try{
-//         const articles = await getAllArticles();
-//         return res.status(200).json(articles);
-//     }catch(err){
-//         return res.status(500).json({
-//             "errors" : {
-//                 "body" : [err.message]
-//             }
-//         })
-//     }
-// })
+route.get('/', async (req,res) => {
+    try{
+        const username = req.query.username;
+        const articles = await getAllArticles(username);
+        return res.status(200).json(articles);
+    }catch(err){
+        return res.status(500).json({
+            "errors" : {
+                "body" : [err.message]
+            }
+        })
+    }
+})
 
 // GET REQ --> /articles/feed              DISPLAYS ARTICLES BY FOLLOWED USERS IN RECENTLY ADDED ORDER
 
