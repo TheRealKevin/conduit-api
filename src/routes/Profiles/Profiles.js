@@ -1,5 +1,6 @@
 const express = require('express');
 const { getProfile } = require('../../controllers/Profiles/Profiles');
+const authByToken = require('../../middleware/auth');
 
 const route = express.Router();
 
@@ -22,5 +23,17 @@ route.get('/:username' , async (req,res) => {
         })
     }
 })
+
+// POST REQ --> /profiles/:username/follow      FOLLOW USER
+
+// route.post('/:username/follow', authByToken, async (req,res) => {
+//     const username = req.params.username.toLowerCase();
+//     try{
+//         const profile = await followUser(req.user.username,username);
+//         return res.status(200).json(profile);
+//     }catch(err){
+
+//     }
+// })
 
 module.exports = route;

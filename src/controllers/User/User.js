@@ -7,7 +7,8 @@ const getUserByEmail = async (email) => {
             "username",
             "email",
             "bio",
-            "image"
+            "image",
+            "token"
         ],
         where : {email : email}
     });
@@ -30,7 +31,8 @@ const updateUser = async (oldUser,  newUser) => {
             "email",
             "username",
             "bio",
-            "image"
+            "image",
+            "token"
         ],
         where : {username : oldUser.username}
     });

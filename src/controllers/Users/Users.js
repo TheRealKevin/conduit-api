@@ -30,7 +30,8 @@ const addUser = async(data) => {
                 "email",
                 "username",
                 "bio",
-                "image"
+                "image",
+                "token"
             ],
             where : { username : newUser.username }
         })
@@ -45,8 +46,9 @@ const loginUser = async(data) => {
     if(!data.email || !data.password){
         throw new Error('Kindly fill the credentials');
     }
+
     // Checking whether the user with the email entered exists in the db or not
-    const user = await User.findOne({where: {username : data.username}});
+    const user = await User.findOne({where: {email : data.email}});
     if(!user){
         throw new Error('User with this email does not exist');
     }

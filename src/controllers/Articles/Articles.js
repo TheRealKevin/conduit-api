@@ -20,7 +20,7 @@ const getArticle = async(slug) => {
         where : {slug : slug},
         include : [        // Used for eager loading/querying another table's columns i.e
             {             // Getting the other tables columns
-                attributes : ["username","bio","image"],
+                attributes : ["username","bio","image", "token"],
                 model : User,
                 as : "author",
             }
@@ -66,7 +66,7 @@ const createArticle = async(article,username) => {
             where : { slug : _article.slug},
             include : [             
                 {
-                    attributes : ["username", "bio", "image"],
+                    attributes : ["username", "bio", "image", "token"],
                     model : User,
                     as : "author",
                    where : {username : username}
@@ -138,12 +138,14 @@ const getAllArticles = async (username) => {
             "description",
             "body",
             "createdAt",
-            "updatedAt"
+            "updatedAt",
+            "favorited",
+            "favoritesCount"
         ],
         where : {authorUsername : username},
         include : [
             {
-                attributes : ["username", "bio", "image"],
+                attributes : ["username", "bio", "image","token"],
                 model : User,
                 as : "author"
             }
