@@ -8,8 +8,10 @@ const route = express.Router();
 
 route.post('/',authByToken, async (req,res) => {
     try{
-        // console.log('This is body ',req.body.article, ' and this is auth ',req.user);
-        const newArticle = await createArticle(req.body.article,req.user.username);
+
+         // Dky auth.js is giving req.user.username.username instead of req.user.username   
+
+        const newArticle = await createArticle(req.body.article,req.user.username.username);    
         return res.send(newArticle)
     }catch(err){
         console.log(err);
@@ -42,7 +44,7 @@ route.get('/:slug', async (req,res) => {
 route.delete('/:slug', authByToken, async (req,res) => {
     try{
         const slug = req.params.slug;
-        await deleteArticle(slug,req.user.username);
+        await deleteArticle(slug,req.user.username.username);     // Dky auth.js is giving req.user.username.username instead of req.user.username   
         return res.status(200).json({ message : 'Article deleted successfully'})
     }catch(err){
         return res.status(500).json({
