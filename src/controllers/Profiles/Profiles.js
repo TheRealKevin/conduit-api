@@ -4,7 +4,7 @@ const { User } = require('../../entities/entities');
 
 //  1. Fix "User was not found" error 
 
-const getProfile = async(username) => {
+const getProfile = async (username) => {
         if(!username) throw new Error('Username of the required profile is empty');
         console.log(`username is ${username}`);
         const user = await User.findOne({

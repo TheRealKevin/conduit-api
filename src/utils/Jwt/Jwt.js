@@ -22,7 +22,7 @@ const verify = token => {
             if(err){
                 return rej(err);
             }else{
-                return res(encoded);
+                return res(encoded);         // NOTE : Return user but within a username object
             }
         })
     })

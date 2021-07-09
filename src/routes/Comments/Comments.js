@@ -9,7 +9,7 @@ const route = express.Router();
 route.post('/:slug/comments', authByToken, async (req,res) => {
     try{
         console.log('Comment is',req.user.username.username);
-        const comment = await addComment(req.body.comment, req.params.slug, req.user.username.username);
+        const comment = await addComment(req.body.comment, req.params.slug, req.user.username);
         return res.status(200).json(comment);
     }catch(err){
         return res.status(500).json({
@@ -25,7 +25,6 @@ route.post('/:slug/comments', authByToken, async (req,res) => {
 route.delete('/:slug/comments/:id', authByToken, async (req,res) => {
     const { slug, id } = req.params;
     try{
-        console.log('username is',req.user.username);
         await deleteComment(slug, id, req.user.username);
         return res.status(200).json({ message : 'Comment deleted successfully'})
     }catch(err){

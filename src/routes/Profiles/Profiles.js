@@ -11,8 +11,8 @@ const route = express.Router();
 // GET REQ --> /profiles/:username             GET PROFILE
 
 route.get('/:username' , async (req,res) => {
-    const username = req.params.username.toLowerCase();
     try{
+        const username = req.params.username;
         const profile = await getProfile(username);
         return res.status(200).json(profile);
     }catch(err){

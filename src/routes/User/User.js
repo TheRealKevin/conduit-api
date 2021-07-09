@@ -22,6 +22,7 @@ route.get('/', authByToken, async(req,res) => {
 
 route.patch('/', authByToken, async(req,res) => {
     try{
+        console.log('In user route, patch req is',req.user);
         const updatedUser = await updateUser(req.user,req.body.user);   // req.user -> OG user retrieved by authByToken
                                                                         // req.body.user -> The new info that user is sending
         if(!updatedUser) throw new Error('User could not be updated');
