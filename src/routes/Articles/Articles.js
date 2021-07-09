@@ -6,12 +6,9 @@ const route = express.Router();
 
 // POST REQ --> /articles                  CREATE ARTICLE
 
-route.post('/',authByToken, async (req,res) => {
+route.post('/', authByToken, async (req,res) => {
     try{
-
-         // Dky auth.js is giving req.user.username.username instead of req.user.username   
-
-        const newArticle = await createArticle(req.body.article,req.user.username.username);    
+        const newArticle = await createArticle(req.body.article,req.user.username); 
         return res.send(newArticle)
     }catch(err){
         console.log(err);
@@ -88,12 +85,6 @@ route.get('/', async (req,res) => {
 })
 
 // GET REQ --> /articles/feed              DISPLAYS ARTICLES BY FOLLOWED USERS IN RECENTLY ADDED ORDER
-
-// POST REQ --> /articles/:slug/comments   ADDS A COMMENT
-
-// GET REQ --> /articles/:slug/comments    GETS ALL COMMENTS
-
-// DELETE REQ --> /articles/:slug/comments  DELETE A COMMENT
 
 // POST REQ --> /articles/:slug/favorite   ADDS TO FAVORITES
 

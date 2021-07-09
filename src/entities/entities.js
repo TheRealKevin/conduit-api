@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, DATE } = require('sequelize');
 const db = require('../config/Database');
 
 const Article = db.define('Article', {
@@ -75,4 +75,36 @@ const User = db.define('User', {
 User.hasMany(Article, {as: "author"});
 Article.belongsTo(User, {as : "author"});
 
-module.exports = { Article, User};
+const Comment = db.define('Comment', {
+    id : {
+        type : Sequelize.INTEGER,
+        autoIncrement : true,
+        primaryKey : true,
+        unique : true,
+        allowNull : false
+    },
+    createdAt : {
+        type : Sequelize.DATE,
+        defaultValue : DATE.NOW,
+        allowNull: false,
+    },
+    updatedAt : {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW
+    },
+    body : {
+        type : Sequelize.TEXT,
+        allowNull : false
+    }
+},{
+    freezeTableName : true
+})
+
+Article.hasMany(Comment)
+Comment.belongsTo(Article);
+
+User.hasMany(Comment)
+Comment.belongsTo(User, {as: "author"});
+
+module.exports = { Article, User, Comment};

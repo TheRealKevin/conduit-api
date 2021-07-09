@@ -3,7 +3,7 @@ const {Op} = require('sequelize');
 const slugify = require('../../utils/Slugify/Slugify');
 const { filterPassword } = require('../../utils/Password/Password');
 
-//      Fixes
+//      Fixes 
 //  1. SQL commands running but author is not being updated in DB
 
 const getArticle = async(slug) => {
@@ -33,17 +33,15 @@ const getArticle = async(slug) => {
 const createArticle = async(article,username) => {
     if(!article.title) throw new Error('Title missing');
     if(!article.body) throw new Error('Body missing');
-    // if(!article.username) throw new Error('Author missing');
 
     const existingArticle = await Article.findOne({where : {title: article.title}});
+
+
     if(existingArticle) throw new Error('Kindly change title of your article as another article with the similar title already exists');
     const existingUser = await User.findOne({where : {username : username}});
     
-    // console.log('This is email given ',email);
     
     if(!existingUser) throw new Error('User does not exist');
-    console.log(`This is existing User's email `,existingUser.email);
-    console.log(`This is existing User`,existingUser);
     try{
         const _article = await Article.create({
             slug : slugify(article.title),
@@ -73,7 +71,6 @@ const createArticle = async(article,username) => {
                 }
             ]
         });
-        // console.log('Article created is',newArticle)
         return newArticle;
     }catch(err){
         throw err;
@@ -82,17 +79,17 @@ const createArticle = async(article,username) => {
 
 const deleteArticle = async (slug,username) => {
     const article = await Article.findOne({where : {slug : slug}});
-    if(!article) throw new Error('Article with such slug does not exist');
+    if(!article) throw new Error('Article does not exist');
     try{
-        const articleDeleted =  !!await Article.destroy({   // V.Imp 1. Using the !! Bang Bang Operator on the result of the await which will change the result into a Boolean
+        const deletedArticle =  !!await Article.destroy({   // V.Imp 1. Using the !! Bang Bang Operator on the result of the await which will change the result into a Boolean
                     where : {[Op.and] : [  // V.Imp 2. Op -> short for operator and Op.and is equivalent of WHERE A AND B
                         {slug : slug},      // We use Op when we have to consider 2 or more conditions i.e when using "where" (as default is just comparing one value)
                         {authorUsername : username}
                     ]}
                 }); 
-        // console.log('Article deleted ',articleDeleted);
-        if(!articleDeleted) throw new Error('Article was not able to be deleted'); 
-        return articleDeleted;
+        // console.log('Article deleted ',deletedArticle);
+        if(!deletedArticle) throw new Error('Article was not able to be deleted'); 
+        return deletedArticle;
     }catch(err){
         throw err;
     }

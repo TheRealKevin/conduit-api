@@ -18,7 +18,7 @@ const addUser = async(data) => {
     }
     try{
         const newUser = await User.create({
-            username: data.username.toLowerCase(),
+            username: data.username,
             email : data.email,
             password : await genPassword(data.password),
             token : await sign(data.username,data.email)

@@ -6,7 +6,8 @@ const db = require('./src/config/Database');
 const usersRoute = require('./src/routes/Users/Users');
 const userRoute = require('./src/routes/User/User');
 const articlesRoute = require('./src/routes/Articles/Articles');
-const profilesRoute = require('./src/routes/Profiles/Profiles')
+const profilesRoute = require('./src/routes/Profiles/Profiles');
+const commentsRoute = require('./src/routes/Comments/Comments');
 
 const app = express();
 
@@ -16,13 +17,15 @@ app.use(bodyParser.json());
 
 //  Routes
 
-app.use('/api/users',usersRoute);
+app.use('/api/users', usersRoute);
 
-app.use('/api/user',userRoute);
+app.use('/api/user', userRoute);
 
-app.use('/api/articles',articlesRoute);
+app.use('/api/articles', articlesRoute);
 
-app.use('/api/profiles',profilesRoute);
+app.use('/api/profiles', profilesRoute);
+
+app.use('/api/articles', commentsRoute);
 
 // REQUESTS
 
