@@ -57,7 +57,8 @@ const loginUser = async(data) => {
     if(!passCheck){
         throw new Error('Wrong Password');
     }
-    user.token = await sign(user);
+    // console.log('In users controllers,',user.username,user.email);
+    user.token = await sign(user.username,user.email);
     return filterPassword(user);
 }
 

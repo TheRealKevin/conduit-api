@@ -20,7 +20,7 @@ route.post('/', async (req,res) => {
                 "errors": {
                     "body": [err.message]
             }
-        })
+        }) 
     }
 })
  

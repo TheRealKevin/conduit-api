@@ -13,7 +13,7 @@ const authByToken = async (req,res,next) => {       //  runs the code below next
     try{
         const user = await verify(token);
         if(!user) throw new Error('No user found in token');
-        req.user = user.username;       // If verified, place user in req       NOTE : verify returns user but idk why within a username object 
+        req.user = user;       // If verified, place user in req       NOTE : verify returns user but idk why within a username object 
         return next();      
     }catch(err){
         return res.status(401).json({ 
