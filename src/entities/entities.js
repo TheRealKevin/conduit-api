@@ -1,6 +1,9 @@
 const { Sequelize, DATE } = require('sequelize');
 const db = require('../config/Database');
 
+//      FIXES
+//  1. Implement followers and Following Models?
+
 const Article = db.define('Article', {
     slug : { 
         type: Sequelize.STRING(30),
@@ -106,5 +109,9 @@ Comment.belongsTo(Article);
 
 User.hasMany(Comment)
 Comment.belongsTo(User, {as: "author"});
+
+// Followers Model
+
+// Following Model
 
 module.exports = { Article, User, Comment};

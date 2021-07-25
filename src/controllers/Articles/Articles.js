@@ -26,7 +26,7 @@ const getArticle = async(slug) => {
             }
         ]  
     });
-    if(!article) throw new Error(`Article doesn't exist`);
+    if(!article) throw new Error(`Article does not exist`);
     return article;
 }
 

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { sequelize } = require('./src/entities/User/User');
 const db = require('./src/config/Database');
+const feedRoute = require('./src/routes/Feed/Feed');
 const usersRoute = require('./src/routes/Users/Users');
 const userRoute = require('./src/routes/User/User');
 const articlesRoute = require('./src/routes/Articles/Articles');
@@ -16,6 +17,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //  Routes
+
+app.use('/api/feed', feedRoute);
 
 app.use('/api/users', usersRoute);
 

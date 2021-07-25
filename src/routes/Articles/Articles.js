@@ -17,7 +17,7 @@ route.post('/', authByToken, async (req,res) => {
                 "body": [err.message]
             }
         })
-    }
+    } 
 })
 
 // GET REQ --> /articles/:slug             GET ARTICLE

@@ -6,7 +6,7 @@ const route = express.Router();
 
 //      FIXES
 
-//  1. Fix "User was not found" error 
+//  1. Follow an author (How to use followUser in model) 
 
 // GET REQ --> /profiles/:username             GET PROFILE
 
@@ -27,12 +27,16 @@ route.get('/:username' , async (req,res) => {
 // POST REQ --> /profiles/:username/follow      FOLLOW USER
 
 // route.post('/:username/follow', authByToken, async (req,res) => {
-//     const username = req.params.username.toLowerCase();
+//     const username = req.params.username;
 //     try{
-//         const profile = await followUser(req.user.username,username);
+//         const profile = await followProfile(username, req.user);
 //         return res.status(200).json(profile);
 //     }catch(err){
-
+//         return res.status(404).json({
+//             "errors" : {
+//                 message : [err.message]
+//             }
+//         })
 //     }
 // })
 
