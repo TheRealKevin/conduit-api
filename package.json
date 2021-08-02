@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,9 +18,10 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "redux-persist": "^6.0.0",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "nodemon": "^2.0.12"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "cross-env": "^7.0.3"
   }
 }
