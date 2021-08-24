@@ -52,8 +52,6 @@ app.get('/', async (req,res) => {
 
 // TO START sequelize 
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT , () => {
-    console.log(`App is listening to ${PORT}`);
+app.listen(process.env.PORT || 3000 , () => {
+    console.log(`App is listening to ${process.env.PORT}`);
 })
