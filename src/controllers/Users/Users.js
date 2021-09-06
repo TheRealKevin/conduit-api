@@ -30,14 +30,16 @@ const addUser = async(data) => {
                 "email",
                 "username",
                 "bio",
-                "image",
+                "image", 
                 "token"
             ],
             where : { username : newUser.username }
         })
+        console.log('In User route',updatedNewUser);
         // updatedNewUser.token = await sign(updatedNewUser)   
         return filterPassword(updatedNewUser); 
     }catch(err){
+        console.log('In user controller',err);
         throw err;
     }
 }

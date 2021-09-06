@@ -10,7 +10,7 @@ const route = express.Router();
 
 // GET REQ --> /profiles/:username             GET PROFILE
 
-route.get('/:username' , async (req,res) => {
+route.get('/:username' , async (req,res) => { 
     try{
         const username = req.params.username;
         const profile = await getProfile(username);

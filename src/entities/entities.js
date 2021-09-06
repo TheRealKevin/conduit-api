@@ -47,17 +47,28 @@ const Article = db.define('Article', {
 const User = db.define('User', {
     email: {
         type: Sequelize.STRING(40),
+        validate : {
+            isEmail : true,
+            notEmpty : true
+        },
         allowNull: false,
         unique: true
     },
     username: {
         type: Sequelize.STRING(30),
+        validate : {
+            notEmpty : true,
+            isAlphanumeric : true
+        },        
         allowNull: false,
         primaryKey: true,
         unique: true
     },
     password: {
         type: Sequelize.STRING,
+        validate : {
+            notEmpty : true
+        },
         allowNull: false
     },
     bio: {

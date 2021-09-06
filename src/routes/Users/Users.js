@@ -13,9 +13,9 @@ route.post('/', async (req,res) => {
             username : req.body.user.username,
             password: req.body.user.password
         })
-        return res.send(newUser);
+        return res.send(newUser); 
     }catch(err){
-        console.error(err);
+        console.error('In users route',err);
         return res.status(500).json({
                 "errors": {
                     "body": [err.message]
